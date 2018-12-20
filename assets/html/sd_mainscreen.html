@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>StreamDesk</title>
+        <meta name="description" content="Streamdesk is an open source desktop client for viewing many of the common video streaming sites.">
+        <meta name="keywords" content="">
+        <meta name="author" content="StreamDesk">
+        <meta charset="UTF-8" />
+        
+        <link rel="stylesheet" type="text/css" href="../css/style.css" />
+        <link rel="stylesheet" type="text/css" href="../css/fonts.css" />
+    </head>
+    <body>
+        <header>
+            <nav>
+                <div class="nav-primary">
+                    <ul>
+                        <li><img class="nav-logo" src="../images/logo128.png" alt="StreamDesk Logo" /></li>
+                        <li><a href="#" class="nav-sd">StreamDesk</a>
+                            <ul>
+                                <li><a href="#" id="menu_about">About StreamDesk</a></li>
+                                <li><a href="#" id="menu_prefs">Preferences</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">View</a>
+                            <ul>
+                                <li><a href="#" id="menu_showChat">Show Chat</a></li>
+                                <li><a href="#" id="menu_hideMenu">Hide Menubar</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Streams</a>
+                            <ul id="streamlist">
+                            </ul>
+                        </li>
+                        <li id="debug"><a href="#">Debug</a>
+                            <ul>
+                                <li><a id="menu_forceUpdate" href="#">Force DB Update</a></li>
+                                <li><a id="menu_showdevtools" href="#">Show Developer Tools</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <div class="tray">
+                        <div class="onlineStatus">Offline</div>
+                        <input class="search" type="text" placeholder="Search.." name="search" />
+                        <div id="searchPopup"></div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <section>
+            <div id="streamView"></div>
+            <div id="expander"></div>
+        </section>
+        <footer></footer>
+
+        <script src="../scripts/sd_mainscreen.js"></script>
+    </body>
+</html>

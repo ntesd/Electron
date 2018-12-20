@@ -1,0 +1,28 @@
+{
+  "name": "streamdesk-electron",
+  "version": "3.0.0",
+  "description": "Open source desktop client that provides easy access to many streaming video sites.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/StreamDesk/Electron/streamdesk-electron.git"
+  },
+  "author": "NasuTek Enterprises",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://gitlab.com/StreamDesk/Electron/streamdesk-electron/issues"
+  },
+  "homepage": "https://gitlab.com/StreamDesk/Electron/streamdesk-electron#readme",
+  "devDependencies": {
+    "electron": "^3.0.13",
+    "electron-packager": "^13.0.1"
+  },
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "konami": "^1.6.2"
+  }
+}
