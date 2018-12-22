@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "jquery": "^3.3.1",
-    "konami": "^1.6.2"
+    "konami": "^1.6.2",
+    "linq": "^3.1.1"
   }
 }

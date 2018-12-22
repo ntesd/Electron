@@ -1,0 +1,65 @@
+{
+    "fileType": "StreamDesk Electron JSONDB",
+    "minimumCompatible": "3.0.0",
+    "databaseVersion": "1",
+    "Name": "Developer Test Database",
+    "Description": "Used for creating a JSON Schema and dev testing",
+    "VendorName": "NasuTek Enterprises",
+    "StreamEmbeds": [
+        {
+            "ID": "stream_twitch",
+            "Name": "Twitch",
+            "Embed": "<iframe class=\"stream-frame\" src=\"https://player.twitch.tv/?channel=$ID$\"></iframe>"
+        }
+    ],
+    "ChatEmbeds": [],
+    "Providers": [
+        {
+            "Name": "Test Provider",
+            "Streams": [
+                {
+                    "ID": "fafafanta",
+                    "GuidId": "{9D5885B2-5D09-4AF4-BF91-895FB0368FB0}",
+                    "Name": "FantaVision",
+                    "Description": "Game Watching",
+                    "Web": "https://www.patreon.com/FANTAVISION",
+                    "Tags": [
+                        "Twitch.TV",
+                        "LetsPlay"
+                    ],
+                    "Promoted": false,
+                    "StreamEmbed": "stream_twitch",
+                    "ChatEmbed": "none",
+                    "Channel": "none",
+                    "Width": 800,
+                    "Height": 600
+                }
+            ],
+            "SubProviders": [
+                {
+                    "Name": "Test SubProvider",
+                    "Streams": [
+                        {
+                            "ID": "test",
+                            "GuidId": "{ACE41FD3-DD15-4E33-8769-FB891E3FC509}",
+                            "Name": "Test Stream",
+                            "Description": "Tests Streams",
+                            "Web": "http://streamdesk.ca",
+                            "Tags": [
+                                "Test",
+                                "Tags"
+                            ],
+                            "Promoted": false,
+                            "StreamEmbed": "stream_test",
+                            "ChatEmbed": "chat_test",
+                            "Channel": "test",
+                            "Width": 800,
+                            "Height": 600
+                        }
+                    ],
+                    "SubProviders": []
+                }
+            ]
+        }
+    ]
+}

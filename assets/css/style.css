@@ -188,7 +188,7 @@ body {
 }
 
 #streamView {
-    margin 0 auto;
+    margin: 0 auto;
 }
 
 #expander {
@@ -217,7 +217,7 @@ body {
 #searchPopup {
     line-height: 1.5;
     margin-top: 32px;
-    margin-right 5px;
+    margin-right: 5px;
     display: none;
     max-width: 350px;
     -webkit-box-shadow: 3px 3px 5px -2px rgba(82,82,82,1);
@@ -270,3 +270,13 @@ body {
     };
 }
 
+.stream-frame {
+    display: block;
+    width: 100vw;
+    height: calc(100vh - 28px);
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0 none;
+    box-sizing: border-box;
+  }

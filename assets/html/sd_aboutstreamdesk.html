@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>About StreamDesk 3.0</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../css/fonts.css" />
+</head>
+
+<body>
+    <img src="../images/logo128.png" style="float: left; width: 64px; height: 64px; padding: 15px;" />
+    <div style="float: left; padding-top: 15px;">
+        <strong>StreamDesk</strong><br />
+        Version: <script>document.write(require('electron').ipcRenderer.sendSync('get-version'))</script><br />
+        Copyright &copy; 2018 NasuTek Enterprises.
+    </div>
+    <hr style="clear: both;" />
+    <pre style="padding-left: 15px;">
+Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    <a href="#" onclick="require('electron').shell.openExternal('http://www.apache.org/licenses/LICENSE-2.0')">http://www.apache.org/licenses/LICENSE-2.0</a>
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+    </pre>
+    <hr />
+    <div style="text-align: right; padding-right: 15px;"><button onclick="self.close()">OK</button></div>
+</body>
+
+</html>
