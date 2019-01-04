@@ -1,13 +1,13 @@
 /*************************************************************************************
  * StreamDesk 3.0
  * Copyright 2013-2019 NasuTek Global Enterprises
- *     
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,13 +21,13 @@ const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const ipcMain = electron.ipcMain;
 
-const sd = require('./sd_database');
-    
+const sd = require('./modules/sd_database');
+
 const StreamDeskDatabase = sd.StreamDeskDatabase;
 const StreamDeskProvider = sd.StreamDeskProvider;
 const StreamDeskStream = sd.StreamDeskStream;
 const StreamDeskEmbed = sd.StreamDeskEmbed;
-const settings = require('./settings');
+const settings = require('./modules/settings');
 
 var win;
 
@@ -54,7 +54,7 @@ ipcMain.on('create-devdatabase', function(event, filePath) {
     db.Providers.push(provider);
     db.StreamEmbeds.push(streamEmbed);
 
-    db.save(filePath);   
+    db.save(filePath);
 });
 
 app.on('ready', function() {
