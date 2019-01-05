@@ -15,21 +15,12 @@
  * limitations under the License.
  ***************************************************************************************************/
 
-module.exports = class StreamDeskStream {
-    constructor(id = '', guidId = '{00000000-0000-0000-0000-000000000000}', name = '',
-                description = '', web = '', promoted = false, streamembed = '', chatembed = '',
-                channel = '', width = 800, height = 600, ...tags) {
-        this.ID = id;
-        this.GuidId = guidId;
-        this.Name = name;
-        this.Description = description;
-        this.Web = web;
-        this.Tags = tags;
-        this.Promoted = promoted;
-        this.StreamEmbed = streamembed;
-        this.ChatEmbed = chatembed;
-        this.Channel = channel;
-        this.Width = width;
-        this.Height = height;
-    };
+const electron = require('electron');
+const BrowserWindow = electron.BrowserWindow;
+
+module.exports.openEditor = function() {
+    var about = new BrowserWindow({ width: 800, height: 600 });
+    about.setMenu(null);
+
+    about.loadFile('assets/html/sd_streameditor.html');
 };

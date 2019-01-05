@@ -15,21 +15,17 @@
  * limitations under the License.
  ***************************************************************************************************/
 
-module.exports = class StreamDeskStream {
-    constructor(id = '', guidId = '{00000000-0000-0000-0000-000000000000}', name = '',
-                description = '', web = '', promoted = false, streamembed = '', chatembed = '',
-                channel = '', width = 800, height = 600, ...tags) {
-        this.ID = id;
-        this.GuidId = guidId;
-        this.Name = name;
-        this.Description = description;
-        this.Web = web;
-        this.Tags = tags;
-        this.Promoted = promoted;
-        this.StreamEmbed = streamembed;
-        this.ChatEmbed = chatembed;
-        this.Channel = channel;
-        this.Width = width;
-        this.Height = height;
-    };
-};
+const remote = require('electron').remote;
+var win = remote.getCurrentWindow();
+win.webContents.openDevTools();
+
+const $ = require('jquery');
+const JSONEditor = require('@json-editor/json-editor');
+
+$.getJSON('../schemas/db_schema.json', function(data) {
+    var element = document.getElementById('parent');
+
+    var editor = new JSONEditor(element, {
+        schema: data
+    });
+});

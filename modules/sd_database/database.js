@@ -1,19 +1,19 @@
-/*************************************************************************************
+/***************************************************************************************************
  * StreamDesk 3.0
  * Copyright 2013-2019 NasuTek Global Enterprises
- *     
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *    http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- **************************************************************************************/
+ ***************************************************************************************************/
 
 const fs = require('fs');
 
@@ -30,7 +30,7 @@ module.exports = class StreamDeskDatabase {
         this.Name = name;
         this.Description = description;
         this.VendorName = vendorName;
-        
+
         this.StreamEmbeds = [];
         this.ChatEmbeds = [];
         this.Providers = [];
@@ -39,7 +39,8 @@ module.exports = class StreamDeskDatabase {
     static open(filePath) {
         function iterateProvider(providerJson, providerObject) {
             providerJson.Streams.forEach(function(x) {
-                var stream = new StreamDeskStream(x.ID, x.GuidId, x.Name, x.Description, x.Web, x.Promoted, x.StreamEmbed, x.ChatEmbed, x.Channel, x.Width, x.Height);
+                var stream = new StreamDeskStream(x.ID, x.GuidId, x.Name, x.Description, x.Web,
+                    x.Promoted, x.StreamEmbed, x.ChatEmbed, x.Channel, x.Width, x.Height);
                 x.Tags.forEach(function(i) {
                     stream.Tags.push(i);
                 });
@@ -102,7 +103,9 @@ module.exports = class StreamDeskDatabase {
         function iterateProvider(providerObject) {
             html += '<li><a href="#">' + providerObject.Name + '</a><ul>'
             providerObject.Streams.forEach(function(x) {
-                html += '<li><a href="#" id="'+ x.GuidId.replace('{','').replace('}','') +'">' + x.Name + '</a></li>';
+                html += '<li><a href="#" id="' +
+                    x.GuidId.replace('{','').replace('}','') +'">' +
+                    x.Name + '</a></li>';
             });
 
             if(providerObject.SubProviders != undefined) {
@@ -159,6 +162,18 @@ module.exports = class StreamDeskDatabase {
         var returnValue = undefined;
 
         this.StreamEmbeds.forEach(function(x) {
+            if(x.ID === embedName) {
+                returnValue = x.Embed;
+            }
+        });
+
+        return returnValue;
+    };
+
+    getChatEmbed(embedName) {
+        var returnValue = undefined;
+
+        this.ChatEmbeds.forEach(function(x) {
             if(x.ID === embedName) {
                 returnValue = x.Embed;
             }

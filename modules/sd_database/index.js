@@ -1,4 +1,4 @@
-/*************************************************************************************
+/***************************************************************************************************
  * StreamDesk 3.0
  * Copyright 2013-2019 NasuTek Global Enterprises
  *
@@ -13,7 +13,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- **************************************************************************************/
+ ***************************************************************************************************/
 
 module.exports.StreamDeskDatabase = require('./database');
 module.exports.StreamDeskEmbed = require('./embed');

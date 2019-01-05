@@ -1,12 +1,32 @@
+<!--
+/***************************************************************************************************
+ * StreamDesk 3.0
+ * Copyright 2013-2019 NasuTek Global Enterprises
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************/
+-->
+
 <!DOCTYPE html>
 <html>
     <head>
         <title>StreamDesk</title>
-        <meta name="description" content="Streamdesk is an open source desktop client for viewing many of the common video streaming sites.">
-        <meta name="keywords" content="">
-        <meta name="author" content="StreamDesk">
+        <meta name="description" content="Streamdesk is an open source desktop client for viewing many of the common video streaming sites." />
+        <meta name="keywords" content="" />
+        <meta name="author" content="StreamDesk" />
+        <meta name="activeStream" content="" />
         <meta charset="UTF-8" />
-        
+
         <link rel="stylesheet" type="text/css" href="../css/style.css" />
         <link rel="stylesheet" type="text/css" href="../css/fonts.css" />
     </head>
@@ -35,6 +55,7 @@
                         <li id="debug"><a href="#">Debug</a>
                             <ul>
                                 <li><a id="menu_forceUpdate" href="#">Force DB Update</a></li>
+                                <li><a id="menu_openEditor" href="#">Open StreamDesk Editor</a></li>
                                 <li><a id="menu_showdevtools" href="#">Show Developer Tools</a></li>
                             </ul>
                         </li>
@@ -49,6 +70,7 @@
         </header>
         <section id="parent">
             <div id="streamView"></div>
+            <div id="chatView"></div>
         </section>
         <footer></footer>
 

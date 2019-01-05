@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "debug": "electron --inspect-brk=5858 ."
   },
   "repository": {
     "type": "git",
@@ -18,10 +19,12 @@
   },
   "homepage": "https://gitlab.com/StreamDesk/Electron/streamdesk-electron#readme",
   "devDependencies": {
+    "@types/jquery": "^3.3.29",
     "electron": "^3.0.13",
     "electron-packager": "^13.0.1"
   },
   "dependencies": {
+    "@json-editor/json-editor": "^1.2.1",
     "jquery": "^3.3.1",
     "konami": "^1.6.2",
     "linq": "^3.1.1"

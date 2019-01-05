@@ -1,0 +1,114 @@
+{
+    "$schema": "https://ndn.nasutek.com/schemas/json/db_schema.json",
+
+    "definitions": {
+        "embed": {
+            "type": "object",
+            "properties": {
+                "ID": {
+                    "type": "string"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "Embed": {
+                    "type": "string"
+                }
+            }
+        },
+        "stream": {
+            "type": "object",
+            "properties": {
+                "ID": {
+                    "type": "string"
+                },
+                "GuidId": {
+                    "type": "string"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "Description": {
+                    "type": "string"
+                },
+                "Web": {
+                    "type": "string"
+                },
+                "Tags": {
+                    "type": "array"
+                },
+                "Promoted": {
+                    "type": "boolean"
+                },
+                "StreamEmbed": {
+                    "type": "string"
+                },
+                "ChatEmbed": {
+                    "type": "string"
+                },
+                "Channel": {
+                    "type": "string"
+                },
+                "Width": {
+                    "type": "number"
+                },
+                "Height": {
+                    "type": "number"
+                }
+            }
+        },
+        "provider": {
+            "type": "object",
+            "properties": {
+                "Name": {
+                    "type": "string"
+                },
+                "Streams": {
+                    "type": "array",
+                    "items": { "$ref": "#/definitions/stream" }
+                },
+                "SubProviders": {
+                    "type": "array",
+                    "items": { "$ref": "#/definitions/provider" }
+                }
+            }
+        }
+    },
+
+    "type": "object",
+    "properties": {
+        "fileType": {
+            "type": "string",
+            "default": "StreamDesk Electron JSONDB"
+        },
+        "minimumCompatible": {
+            "type": "string",
+            "default": "3.0.0"
+        },
+        "databaseVersion": {
+            "type": "string",
+            "default": "1"
+        },
+        "Name": {
+            "type": "string"
+        },
+        "Description": {
+            "type": "string"
+        },
+        "VendorName": {
+            "type": "string"
+        },
+        "StreamEmbeds": {
+            "type": "array",
+            "items": { "$ref": "#/definitions/embed" }
+        },
+        "ChatEmbeds": {
+            "type": "array",
+            "items": { "$ref": "#/definitions/embed" }
+        },
+        "Providers": {
+            "type": "array",
+            "items": { "$ref": "#/definitions/provider" }
+        }
+    }
+}

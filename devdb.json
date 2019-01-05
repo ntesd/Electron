@@ -12,7 +12,13 @@
             "Embed": "<iframe class=\"stream-frame\" src=\"https://player.twitch.tv/?channel=$ID$\"></iframe>"
         }
     ],
-    "ChatEmbeds": [],
+    "ChatEmbeds": [
+        {
+            "ID": "chat_test",
+            "Name": "Chat Test Embed",
+            "Embed": "<div style=\"width: 100vw; height: 200px;\">I am testing the chat window <img src=\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNkG_gOgkaCNbUA5m4gNr9cmenNkC2PrsbU5R-PEHZTSeSRQvz7w\" /></div>"
+        }
+    ],
     "Providers": [
         {
             "Name": "Test Provider",
@@ -29,7 +35,7 @@
                     ],
                     "Promoted": false,
                     "StreamEmbed": "stream_twitch",
-                    "ChatEmbed": "none",
+                    "ChatEmbed": "chat_test",
                     "Channel": "none",
                     "Width": 800,
                     "Height": 600

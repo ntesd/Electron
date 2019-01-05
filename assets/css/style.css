@@ -1,3 +1,20 @@
+/***************************************************************************************************
+ * StreamDesk 3.0
+ * Copyright 2013-2019 NasuTek Global Enterprises
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ***************************************************************************************************/
+
 body {
     margin: 0;
     font-family: RobotoLight, "Lucida Sans Unicode", "Lucida Grande", Helvetica, sans-serif;
@@ -41,11 +58,11 @@ body {
     -moz-box-shadow: 2px 2px 3px #cdcdcd;
     -webkit-box-shadow: 2px 2px 3px #cdcdcd;
     box-shadow: 1px 1px 4px #cdcdcd;
-    
+
 }
 
 .dialog .about {
-    
+
 }
 
 /* Navigation */
@@ -85,12 +102,12 @@ body {
     -webkit-box-shadow: 2px 2px 3px #f0f0f0;
     box-shadow: 1px 1px 4px #f0f0f0;
 }
- 
+
 .nav-primary li {
     float: left;
     position:relative;
 }
- 
+
 .nav-primary a {
     color: #969696;
     display: block;
@@ -100,11 +117,11 @@ body {
     padding: 0 10px;
     text-decoration: none;
 }
- 
+
 .nav-primary a:hover {
     background: #f5f5f5;
 }
- 
+
 .nav-primary ul ul {
     display:none;
     position: absolute;
@@ -112,7 +129,7 @@ body {
     left: 0;
     width: auto;
 }
- 
+
 .nav-primary ul ul li {
     width: 180px;
     border-left: 4px solid #0057ad;
@@ -142,11 +159,11 @@ body {
     -webkit-filter: blur(0.5px);
     filter: blur(0.5px);
 }
- 
+
 .nav-primary ul li:hover > ul {
     display: block;
 }
- 
+
 .nav-primary ul ul ul {
     left: 100%;
     top: 0;
@@ -163,7 +180,7 @@ body {
     display: none;
     font-size: 11px;
     color: #b2b2b2;
-    
+
 }
 
 .search {
@@ -254,29 +271,22 @@ body {
 }
 
 /* Chrome & Safari */
-@media screen and (-webkit-min-device-pixel-ratio:0) { 
-    
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+
 }
 
 /* Firefox */
 @-moz-document url-prefix() {
-    
+
 }
 
 /* Opera */
 @media (min-resolution: .001dpcm) {
     _:-o-prefocus, input[type=search] {
-        
+
     };
 }
 
-.stream-frame {
-    display: block;
-    width: 100vw;
-    height: calc(100vh - 28px);
-    max-width: 100%;
-    margin: 0;
-    padding: 0;
-    border: 0 none;
-    box-sizing: border-box;
-  }
+#chatView {
+    display: none;
+}
