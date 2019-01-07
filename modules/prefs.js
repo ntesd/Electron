@@ -15,17 +15,12 @@
  * limitations under the License.
  ***************************************************************************************************/
 
-// const remote = require('electron').remote;
-// var win = remote.getCurrentWindow();
-// win.webContents.openDevTools();
+const electron = require('electron');
+const BrowserWindow = electron.BrowserWindow;
 
-const $ = require('jquery');
-const JSONEditor = require('@json-editor/json-editor');
+module.exports.openPrefs = function() {
+    var prefs = new BrowserWindow({ width: 800, height: 600 });
+    prefs.setMenu(null);
 
-$.getJSON('../schemas/db_schema.json', function(data) {
-    var element = document.getElementById('parent');
-
-    var editor = new JSONEditor(element, {
-        schema: data
-    });
-});
+    prefs.loadFile('assets/html/sd_prefs.html');
+};

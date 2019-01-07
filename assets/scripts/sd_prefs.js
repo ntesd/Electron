@@ -19,13 +19,20 @@
 // var win = remote.getCurrentWindow();
 // win.webContents.openDevTools();
 
+const electron = require('electron');
+const ipcRenderer = electron.ipcRenderer;
+
 const $ = require('jquery');
 const JSONEditor = require('@json-editor/json-editor');
+const settings = ipcRenderer.sendSync('get-settings');
 
-$.getJSON('../schemas/db_schema.json', function(data) {
+$.getJSON('../schemas/prefs.json', function(data) {
     var element = document.getElementById('parent');
 
     var editor = new JSONEditor(element, {
-        schema: data
+        schema: data,
+        disable_edit_json: true,
+        disable_properties: true
     });
+    editor.setValue(settings);
 });

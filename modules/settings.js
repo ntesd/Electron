@@ -19,11 +19,7 @@ const fs = require('fs');
 const path = require('path');
 
 var settingsPath;
-
-var settings = {
-    streamFiles: [ ],
-    showDebugMode: false,
-};
+var settings;
 
 module.exports.initSettings = function() {
     settingsPath = process.env.APPDATA || (process.platform == 'darwin' ?
@@ -32,10 +28,19 @@ module.exports.initSettings = function() {
 
     if(fs.existsSync(settingsPath)) {
         settings = JSON.parse(fs.readFileSync(settingsPath, 'utf-8'));
+    } else {
+        settings = {
+            streamFiles: [ ],
+            showDebugMode: false,
+        };
     }
 };
 
-module.exports.returnSettings = function() {
+module.exports.setSettings = function(value) {
+    settings = value;
+};
+
+module.exports.getSettings = function() {
     return settings;
 };
 

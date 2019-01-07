@@ -20,6 +20,7 @@ const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const ipcMain = electron.ipcMain;
+const settings = require('./modules/settings');
 
 var win;
 
@@ -36,11 +37,26 @@ ipcMain.on('open-editor', function() {
     editor.openEditor();
 });
 
+ipcMain.on('open-prefs', function() {
+    const prefs = require('./modules/prefs');
+    prefs.openPrefs();
+});
+
 ipcMain.on('get-version', function(event) {
     event.returnValue = require('./package.json').version;
 });
 
+ipcMain.on('get-settings', function(event) {
+    event.returnValue = settings.getSettings();
+});
+
+ipcMain.on('set-settings', function(event, settings) {
+    settings.setSettings(settings);
+});
+
 app.on('ready', function() {
+    settings.initSettings();
+
     win = new BrowserWindow({width: 800, height: 600});
     win.setMenu(null);
 

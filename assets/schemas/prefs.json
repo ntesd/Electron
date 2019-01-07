@@ -1,0 +1,16 @@
+{
+    "$schema": "https://ndn.nasutek.com/schemas/json/streamdesk/prefs.json",
+
+    "type": "object",
+    "properties": {
+        "showDebugMode": {
+            "type": "boolean",
+        },
+        "streamFiles": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+        }
+    }
+}

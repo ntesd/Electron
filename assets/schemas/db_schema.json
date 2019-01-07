@@ -1,5 +1,5 @@
 {
-    "$schema": "https://ndn.nasutek.com/schemas/json/db_schema.json",
+    "$schema": "https://ndn.nasutek.com/schemas/json/streamdesk/db_schema.json",
 
     "definitions": {
         "embed": {

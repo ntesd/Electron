@@ -21,18 +21,12 @@ const ipcRenderer = electron.ipcRenderer;
 const remote = electron.remote;
 const $ = require('jquery');
 const Konami = require('konami');
-const settings = require('../../modules/settings');
+const settings = ipcRenderer.sendSync('get-settings');
 
 var db;
 var streamId = "";
 
-settings.initSettings();
-
-window.onunload = function() {
-    settings.saveSettings();
-};
-
-if(settings.returnSettings().showDebugMode) {
+if(settings.showDebugMode) {
     $('#debug').show();
 }
 
@@ -50,7 +44,7 @@ $('#menu_about').bind('click', function() {
 });
 
 $('#menu_prefs').bind('click', function() {
-
+    ipcRenderer.send('open-prefs');
 });
 $('#menu_openEditor').bind('click', function() {
     ipcRenderer.send('open-editor');
@@ -74,7 +68,7 @@ $('#menu_forceUpdate').bind('click', function() {
 
 });
 
-settings.returnSettings().streamFiles.forEach(function(x) {
+settings.streamFiles.forEach(function(x) {
     loadDatabase(x);
 });
 
