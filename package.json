@@ -6,7 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
-    "debug": "electron --inspect-brk=5858 ."
+    "debug": "electron --inspect-brk=5858 .",
+    "generate-release-info": "node .\\tools\\generate-release-info.js",
+    "package-win": "electron-packager . streamdesk --overwrite --asar --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --win32metadata.CompanyName=\"NasuTek Enterprises\" --win32metadata.FileDescription=\"StreamDesk Electron\" --win32metadata.ProductName=\"StreamDesk\" --ignore=\"/tools(.*)\" --ignore=\"(.*)\\.autogen\"",
+    "package-linux": "electron-packager . streamdesk --overwrite --asar --platform=linux --arch=x64 --icon=assets/icons/png/logo128.png --prune=true --out=release-builds --ignore=\"/tools(.*)\" --ignore=\"(.*)\\.autogen\"",
+    "package-mac": "electron-packager . streamdesk --overwrite --asar --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=release-builds --ignore=\"/tools(.*)\" --ignore=\"(.*)\\.autogen\""
   },
   "repository": {
     "type": "git",
@@ -17,16 +21,18 @@
   "bugs": {
     "url": "https://gitlab.com/StreamDesk/Electron/streamdesk-electron/issues"
   },
-  "homepage": "https://gitlab.com/StreamDesk/Electron/streamdesk-electron#readme",
+  "homepage": "https://streamdesk.ca",
   "devDependencies": {
     "@types/jquery": "^3.3.29",
     "electron": "^3.0.13",
-    "electron-packager": "^13.0.1"
+    "electron-packager": "^13.0.1",
+    "moment": "^2.23.0"
   },
   "dependencies": {
     "@json-editor/json-editor": "^1.2.1",
     "jquery": "^3.3.1",
     "konami": "^1.6.2",
-    "linq": "^3.1.1"
+    "linq": "^3.1.1",
+    "minimist": "^1.2.0"
   }
 }

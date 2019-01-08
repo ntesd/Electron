@@ -15,11 +15,8 @@
  * limitations under the License.
  ***************************************************************************************************/
 
-const electron = require('electron');
+const {app, BrowserWindow, ipcMain} = require('electron');
 
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
-const ipcMain = electron.ipcMain;
 const settings = require('./modules/settings');
 
 var win;

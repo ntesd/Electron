@@ -15,12 +15,6 @@
  * limitations under the License.
  ***************************************************************************************************/
 
-const fs = require('fs');
-
-const StreamDeskEmbed = require('./embed');
-const StreamDeskProvider = require('./provider');
-const StreamDeskStream = require('./stream');
-
 module.exports = class StreamDeskDatabase {
     constructor(name = '', description = '', vendorName = '') {
         this.fileType = "StreamDesk Electron JSONDB"
@@ -34,67 +28,6 @@ module.exports = class StreamDeskDatabase {
         this.StreamEmbeds = [];
         this.ChatEmbeds = [];
         this.Providers = [];
-    };
-
-    static open(filePath) {
-        function iterateProvider(providerJson, providerObject) {
-            providerJson.Streams.forEach(function(x) {
-                var stream = new StreamDeskStream(x.ID, x.GuidId, x.Name, x.Description, x.Web,
-                    x.Promoted, x.StreamEmbed, x.ChatEmbed, x.Channel, x.Width, x.Height);
-                x.Tags.forEach(function(i) {
-                    stream.Tags.push(i);
-                });
-                providerObject.Streams.push(stream);
-            });
-
-            if(providerJson.SubProviders != undefined) {
-                providerJson.SubProviders.forEach(function(x) {
-                    var provider = new StreamDeskProvider(x.Name);
-                    iterateProvider(x, provider);
-                    providerObject.SubProviders.push(provider);
-                });
-            }
-        };
-
-        if(typeof(filePath) == undefined) {
-            throw "filePath is undefined!";
-        }
-
-        var json = fs.readFileSync(filePath, 'utf-8');
-        var db = JSON.parse(json);
-
-        if(db.fileType == undefined || db.fileType != 'StreamDesk Electron JSONDB') {
-            throw new Error("The JSON used in this file is not a StreamDesk Electron JSONDB File.");
-        }
-
-        var sdDbClass = new StreamDeskDatabase();
-        sdDbClass.Name = db.Name;
-        sdDbClass.Description = db.Description;
-        sdDbClass.VendorName = db.VendorName;
-
-        db.StreamEmbeds.forEach(function(x) {
-            sdDbClass.StreamEmbeds.push(new StreamDeskEmbed(x.ID, x.Name, x.Embed));
-        });
-
-        db.ChatEmbeds.forEach(function(x) {
-            sdDbClass.ChatEmbeds.push(new StreamDeskEmbed(x.ID, x.Name, x.Embed));
-        });
-
-        db.Providers.forEach(function(x) {
-            var provider = new StreamDeskProvider(x.Name);
-            iterateProvider(x, provider);
-            sdDbClass.Providers.push(provider);
-        });
-
-        return sdDbClass;
-    }
-
-    save(filePath = '') {
-        var json = JSON.stringify(this, null, 4);
-        fs.writeFile(filePath, json, 'utf-8', function(err) {
-            if (err) throw err;
-            console.log('File has been saved!');
-        });
     };
 
     populateStreams() {
@@ -128,18 +61,22 @@ module.exports = class StreamDeskDatabase {
         function iterateProvider(providerObject) {
             var returnValue = undefined;
 
-            providerObject.Streams.forEach(function(x) {
+            providerObject.Streams.some(function(x) {
                 if(x.GuidId === '{' + guidId + '}') {
                     returnValue = x;
+                    return true;
                 }
+                return false;
             });
 
             if(providerObject.SubProviders != undefined) {
-                providerObject.SubProviders.forEach(function(x) {
+                providerObject.SubProviders.some(function(x) {
                     var element = iterateProvider(x);
                     if(element != undefined) {
                         returnValue = element;
+                        return true;
                     }
+                    return false;
                 });
             }
 
@@ -148,11 +85,13 @@ module.exports = class StreamDeskDatabase {
 
         var returnValue = undefined;
 
-        this.Providers.forEach(function(x) {
+        this.Providers.some(function(x) {
             var element = iterateProvider(x);
             if(element != undefined) {
                 returnValue = element;
+                return true;
             }
+            return false;
         });
 
         return returnValue;
@@ -161,10 +100,12 @@ module.exports = class StreamDeskDatabase {
     getStreamEmbed(embedName) {
         var returnValue = undefined;
 
-        this.StreamEmbeds.forEach(function(x) {
+        this.StreamEmbeds.some(function(x) {
             if(x.ID === embedName) {
                 returnValue = x.Embed;
+                return true;
             }
+            return false;
         });
 
         return returnValue;
@@ -173,10 +114,12 @@ module.exports = class StreamDeskDatabase {
     getChatEmbed(embedName) {
         var returnValue = undefined;
 
-        this.ChatEmbeds.forEach(function(x) {
+        this.ChatEmbeds.some(function(x) {
             if(x.ID === embedName) {
                 returnValue = x.Embed;
+                return true;
             }
+            return false;
         });
 
         return returnValue;

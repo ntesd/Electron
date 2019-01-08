@@ -15,12 +15,13 @@
  * limitations under the License.
  ***************************************************************************************************/
 
-const electron = require('electron');
-const sd = require('../../modules/sd_database');
-const ipcRenderer = electron.ipcRenderer;
-const remote = electron.remote;
+const {ipcRenderer, remote} = require('electron');
+
 const $ = require('jquery');
 const Konami = require('konami');
+
+const {StreamDesk, StreamDeskDatabase} = require('../../modules/sd_database');
+
 const settings = ipcRenderer.sendSync('get-settings');
 
 var db;
@@ -51,25 +52,26 @@ $('#menu_openEditor').bind('click', function() {
 });
 
 $('#menu_showChat').bind('click', function() {
+    var streamInfo = StreamDesk.getDatabaseAndStreamFromGuid($("meta[name='activeStream']").attr("content"));
+    $('#chatView').html(streamInfo.db.getChatEmbed(streamInfo.stream.ChatEmbed).replace('$ID$', streamInfo.stream.ID));
+
     $('#chatView').toggle();
+
     var win = remote.getCurrentWindow();
     var height = $('#chatView').is(':visible') ?
         win.getBounds().height + $('#chatView').height() :
         win.getBounds().height - $('#chatView').height();
     win.setSize(win.getBounds().width, height);
 
-    var stream = db.getStreamInformationForGuid($("meta[name='activeStream']").attr("content"));
-    $('#chatView').html(db.getChatEmbed(stream.ChatEmbed).replace('$ID$', stream.ID));
-
     changeStreamViewDiv();
 });
 
 $('#menu_forceUpdate').bind('click', function() {
-
+    refreshStreams();
 });
 
 settings.streamFiles.forEach(function(x) {
-    loadDatabase(x);
+    StreamDesk.loadDatabase(x, () => refreshStreams());
 });
 
 function changeStreamViewDiv() {
@@ -88,15 +90,13 @@ function changeStreamViewDiv() {
     });
 }
 
-function loadDatabase(dbPath) {
-    db = sd.StreamDeskDatabase.open(dbPath);
-
-    $('#streamlist').html(db.populateStreams());
+function refreshStreams() {
+    $('#streamlist').html(StreamDesk.populateStreams());
     $("#streamlist").find("a").each(function(){ if(this.id) {
         $('#' + this.id).on('click', function() {
-            var stream = db.getStreamInformationForGuid(this.id);
+            var streamInfo = StreamDesk.getDatabaseAndStreamFromGuid(this.id);
             $("meta[name='activeStream']").attr("content", this.id);
-            $('#streamView').html(db.getStreamEmbed(stream.StreamEmbed).replace('$ID$', stream.ID));
+            $('#streamView').html(streamInfo.db.getStreamEmbed(streamInfo.stream.StreamEmbed).replace('$ID$', streamInfo.stream.ID));
             changeStreamViewDiv();
         });
     }});

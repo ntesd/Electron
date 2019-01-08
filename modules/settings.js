@@ -17,6 +17,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const release = require('../release');
 
 var settingsPath;
 var settings;
@@ -30,8 +31,11 @@ module.exports.initSettings = function() {
         settings = JSON.parse(fs.readFileSync(settingsPath, 'utf-8'));
     } else {
         settings = {
-            streamFiles: [ ],
-            showDebugMode: false,
+            streamFiles: [ (release.generatedInfo.debugBuild ?
+                '../../devdb.json'
+                : 'https://streamdesk.ca/streams.json') // StreamDesk Primary DB Path
+             ],
+            showDebugMode: release.generatedInfo.debugBuild,
         };
     }
 };

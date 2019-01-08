@@ -21,11 +21,63 @@
 
 const $ = require('jquery');
 const JSONEditor = require('@json-editor/json-editor');
+const {ipcRenderer} = require('electron');
+const {dialog} = require('electron').remote;
+const fs = require('fs');
+
+var editor;
+var activeFileName = "New File";
+
+function saveFile(fileName) {
+    if(fileName === "New File") {
+        dialog.showSaveDialog({
+            filters: [
+                { name: 'StreamDesk 3 Database', extensions: ['json'] },
+                { name: 'All Files', extensions: ['*'] }
+            ]
+        }, function (fname) {
+            fs.readFile(filename.toString(), (err, data) => {
+                if (err) throw err;
+                activeFileName = fname;
+                saveFile(fname);
+            });
+        });
+    } else {
+        fs.writeFile(activeFileName, JSON.stringify(editor.getValue(), null, 4), function (err) {
+            if (err) throw err;
+            console.log('Saved!');
+        });
+    }
+}
+
+ipcRenderer.on('open-file', function() {
+    dialog.showOpenDialog({
+        properties: ['openFile'],
+        filters: [
+            { name: 'StreamDesk 3 Database', extensions: ['json'] },
+            { name: 'All Files', extensions: ['*'] }
+        ]
+    }, function (filename) {
+        fs.readFile(filename.toString(), (err, data) => {
+            if (err) throw err;
+            activeFileName = filename.toString();
+            editor.setValue(JSON.parse(data));
+        });
+    });
+});
+
+ipcRenderer.on('save-file', function() {
+    saveFile(activeFileName);
+});
+
+ipcRenderer.on('save-file-as', function() {
+    saveFile("New File");
+});
 
 $.getJSON('../schemas/db_schema.json', function(data) {
     var element = document.getElementById('parent');
 
-    var editor = new JSONEditor(element, {
+    editor = new JSONEditor(element, {
         schema: data
     });
 });

@@ -27,10 +27,10 @@
 </head>
 
 <body>
-    <img src="../images/logo128.png" style="float: left; width: 64px; height: 64px; padding: 15px;" />
+    <img src="../icons/png/logo128.png" style="float: left; width: 64px; height: 64px; padding: 15px;" />
     <div style="float: left; padding-top: 15px;">
         <strong>StreamDesk</strong><br />
-        Version: <script>document.write(require('electron').ipcRenderer.sendSync('get-version'))</script><br />
+        Version: <script>document.write(require('../../release').releaseInfo.version)</script><br />
         Copyright &copy; 2018 NasuTek Enterprises.
     </div>
     <hr style="clear: both;" />
@@ -48,6 +48,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
     </pre>
     <hr />
+    <div style="font-size:9pt; padding-left: 12px;"><script>document.write(require('../../release').fullVersion)</script></div>
     <div style="text-align: right; padding-right: 15px;"><button onclick="self.close()">OK</button></div>
 </body>
 

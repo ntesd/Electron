@@ -15,8 +15,7 @@
  * limitations under the License.
  ***************************************************************************************************/
 
-const electron = require('electron');
-const BrowserWindow = electron.BrowserWindow;
+const {BrowserWindow} = require('electron');
 
 module.exports.openPrefs = function() {
     var prefs = new BrowserWindow({ width: 800, height: 600 });

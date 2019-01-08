@@ -1,0 +1,7 @@
+module.exports = {
+    buildType: '@BUILD_TYPE@',
+    debugBuild: @IS_DEBUG_BUILD@,
+    gitBranch: '@GIT_BRANCH@',
+    gitRevision: '@GIT_REVISION@',
+    dateStamp: '@DATE_STAMP@'
+}

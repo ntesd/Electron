@@ -19,3 +19,4 @@ module.exports.StreamDeskDatabase = require('./database');
 module.exports.StreamDeskEmbed = require('./embed');
 module.exports.StreamDeskStream = require('./stream');
 module.exports.StreamDeskProvider = require('./provider');
+module.exports.StreamDesk = require('./streamdesk');
