@@ -4,13 +4,13 @@
     "type": "object",
     "properties": {
         "showDebugMode": {
-            "type": "boolean",
+            "type": "boolean"
         },
         "streamFiles": {
             "type": "array",
             "items": {
                 "type": "string"
-            },
+            }
         }
     }
 }

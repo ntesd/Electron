@@ -39,16 +39,13 @@ ipcMain.on('open-prefs', function() {
     prefs.openPrefs();
 });
 
-ipcMain.on('get-version', function(event) {
-    event.returnValue = require('./package.json').version;
-});
-
 ipcMain.on('get-settings', function(event) {
-    event.returnValue = settings.getSettings();
+    event.sender.send('process-settings', settings.getSettings());
 });
 
-ipcMain.on('set-settings', function(event, settings) {
-    settings.setSettings(settings);
+ipcMain.on('set-settings', function(event, value) {
+    settings.setSettings(value);
+    win.webContents.send('process-settings', settings.getSettings());
 });
 
 app.on('ready', function() {
@@ -58,4 +55,12 @@ app.on('ready', function() {
     win.setMenu(null);
 
     win.loadFile('assets/html/sd_mainscreen.html');
+});
+
+app.on('window-all-closed', function () {
+    app.quit()
+});
+
+app.on('will-quit', function () {
+    settings.saveSettings();
 });

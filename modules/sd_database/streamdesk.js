@@ -97,5 +97,19 @@ module.exports = {
         });
 
         return returnValue;
+    },
+
+    getAllStreams: function() {
+        var returnValue = [];
+
+        databases.forEach(function (x) {
+            returnValue = returnValue.concat(x.getAllStreams());
+        });
+
+        return returnValue;
+    },
+
+    resetDatabase: function() {
+        databases = [];
     }
 };

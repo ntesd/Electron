@@ -97,6 +97,34 @@ module.exports = class StreamDeskDatabase {
         return returnValue;
     };
 
+    getAllStreams() {
+        function iterateProvider(providerObject, array, dbName) {
+            providerObject.Streams.forEach(function(x) {
+                array.push({
+                    id: x.GuidId.substring(1, 37),
+                    database: dbName,
+                    name: x.Name,
+                    description: x.Description,
+                    tags: x.Tags
+                });
+            });
+
+            if(providerObject.SubProviders != undefined) {
+                providerObject.SubProviders.forEach(function(x) {
+                    iterateProvider(x, array, dbName);
+                });
+            }
+        };
+
+        var returnValue = [];
+
+        this.Providers.forEach(function(x) {
+            iterateProvider(x, returnValue, this.Name);
+        }, this);
+
+        return returnValue;
+    };
+
     getStreamEmbed(embedName) {
         var returnValue = undefined;
 

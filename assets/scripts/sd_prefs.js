@@ -15,25 +15,29 @@
  * limitations under the License.
  ***************************************************************************************************/
 
-// const remote = require('electron').remote;
-// var win = remote.getCurrentWindow();
-// win.webContents.openDevTools();
-
 const electron = require('electron');
 const ipcRenderer = electron.ipcRenderer;
 
 const $ = require('jquery');
 const JSONEditor = require('@json-editor/json-editor');
-const settings = ipcRenderer.sendSync('get-settings');
+var editor;
 
-$.getJSON('../schemas/prefs.json', function(data) {
-    var element = document.getElementById('parent');
+ipcRenderer.send('get-settings');
 
-    var editor = new JSONEditor(element, {
-        schema: data,
-        disable_edit_json: true,
-        disable_properties: true
+ipcRenderer.on('process-settings', function(event, settings) {
+    $.getJSON('../schemas/prefs.json', function(data) {
+        var element = document.getElementById('parent');
+
+        editor = new JSONEditor(element, {
+            schema: data,
+            disable_edit_json: true,
+            disable_properties: true
+        });
+        editor.setValue(settings);
     });
-
-    editor.setValue(settings);
 });
+
+function savePrefs() {
+    ipcRenderer.send('set-settings', editor.getValue());
+    self.close();
+}
