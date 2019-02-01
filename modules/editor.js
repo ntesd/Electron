@@ -59,6 +59,5 @@ const editorMenu = [
 module.exports.openEditor = function() {
     var about = new BrowserWindow({ width: 800, height: 600 });
     about.setMenu(Menu.buildFromTemplate(editorMenu));
-
     about.loadFile('assets/html/sd_streameditor.html');
 };
