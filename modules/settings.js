@@ -24,7 +24,7 @@ var settings;
 
 module.exports.initSettings = function() {
     settingsPath = process.env.APPDATA || (process.platform == 'darwin' ?
-        process.env.HOME + 'Library/Preferences' : '/var/local');
+        process.env.HOME + '/Library/Preferences' : '/var/local');
     settingsPath += path.sep + 'streamdesk.json';
 
     if(fs.existsSync(settingsPath)) {

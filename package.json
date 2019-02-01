@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
     "debug": "electron --inspect-brk=5858 .",
-    "generate-release-info": "node .\\tools\\generate-release-info.js",
+    "generate-release-info": "node ./tools/generate-release-info.js",
     "package-win": "electron-packager . streamdesk --overwrite --asar --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=release-builds --win32metadata.CompanyName=\"NasuTek Enterprises\" --win32metadata.FileDescription=\"StreamDesk Electron\" --win32metadata.ProductName=\"StreamDesk\" --ignore=\"/tools(.*)\" --ignore=\"(.*)\\.autogen\"",
     "package-linux": "electron-packager . streamdesk --overwrite --asar --platform=linux --arch=x64 --icon=assets/icons/png/logo128.png --prune=true --out=release-builds --ignore=\"/tools(.*)\" --ignore=\"(.*)\\.autogen\"",
     "package-mac": "electron-packager . streamdesk --overwrite --asar --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=release-builds --ignore=\"/tools(.*)\" --ignore=\"(.*)\\.autogen\""
