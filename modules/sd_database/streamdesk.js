@@ -70,7 +70,7 @@ module.exports = {
             });
 
             databases.push(sdDbClass);
-            afterLoadCallback();
+            afterLoadCallback(sdDbClass);
         });
     },
 
