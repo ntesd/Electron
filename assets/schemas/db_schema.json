@@ -63,6 +63,13 @@
                 "Name": {
                     "type": "string"
                 },
+                "ProviderType": {
+                    "type": "string",
+                    "enum": [ "Standard", "GenericRSSFeed", "GenericAtomFeed", "YouTubeAtomFeed" ]
+                },
+                "ProviderUri": {
+                    "type": "string"
+                },
                 "Streams": {
                     "type": "array",
                     "items": { "$ref": "#/definitions/stream" }

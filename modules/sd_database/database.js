@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ***************************************************************************************************/
+const { app } = require('electron')
 
 module.exports = class StreamDeskDatabase {
     constructor(name = '', description = '', vendorName = '') {
@@ -31,30 +32,38 @@ module.exports = class StreamDeskDatabase {
     };
 
     populateStreams() {
-        var html = '';
+        var menu = [];
 
         function iterateProvider(providerObject) {
-            html += '<li><a href="#">' + providerObject.Name + '</a><ul>'
+            var menuItem = {};
+            menuItem.label = providerObject.Name;
+            menuItem.submenu = [];
+
             providerObject.Streams.forEach(function(x) {
-                html += '<li><a href="#" id="' +
-                    x.GuidId.replace('{','').replace('}','') +'">' +
-                    x.Name + '</a></li>';
+                var streamMenuItem = {};
+                streamMenuItem.label = x.Name;
+                streamMenuItem.GuidId = x.GuidId;
+                streamMenuItem.click = function() { 
+                    app.emit('load-stream', x.GuidId);
+                };
+                //x.GuidId.replace('{','').replace('}','') +'">' +
+                menuItem.submenu.push(streamMenuItem);
             });
 
             if(providerObject.SubProviders != undefined) {
                 providerObject.SubProviders.forEach(function(x) {
-                    iterateProvider(x);
+                    menuItem.submenu.push(iterateProvider(x));
                 });
             }
 
-            html += '</ul></li>';
+            return menuItem;
         };
 
         this.Providers.forEach(function(provider) {
-            iterateProvider(provider);
+            menu.push(iterateProvider(provider));
         });
 
-        return html;
+        return menu;
     };
 
     getStreamInformationForGuid(guidId) {
@@ -62,7 +71,7 @@ module.exports = class StreamDeskDatabase {
             var returnValue = undefined;
 
             providerObject.Streams.some(function(x) {
-                if(x.GuidId === '{' + guidId + '}') {
+                if(x.GuidId === guidId) {
                     returnValue = x;
                     return true;
                 }
@@ -101,7 +110,7 @@ module.exports = class StreamDeskDatabase {
         function iterateProvider(providerObject, array, dbName) {
             providerObject.Streams.forEach(function(x) {
                 array.push({
-                    id: x.GuidId.substring(1, 37),
+                    id: x.GuidId,
                     database: dbName,
                     name: x.Name,
                     description: x.Description,

@@ -16,9 +16,11 @@
  ***************************************************************************************************/
 
 module.exports = class StreamDeskProvider {
-    constructor(name) {
+    constructor(name, providerType, uri) {
         this.Name = name;
         this.Streams = [];
         this.SubProviders = [];
+        this.ProviderType = providerType;
+        this.ProviderUri = uri;
     }
 }

@@ -32,7 +32,7 @@ module.exports.initSettings = function() {
     } else {
         settings = {
             streamFiles: [ (release.generatedInfo.debugBuild ?
-                '../../devdb.json'
+                'devdb.json'
                 : 'https://streamdesk.ca/streams.json') // StreamDesk Primary DB Path
              ],
             showDebugMode: release.generatedInfo.debugBuild,

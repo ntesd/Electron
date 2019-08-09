@@ -16,7 +16,7 @@
  ***************************************************************************************************/
 
 const {StreamDeskDatabase,StreamDeskEmbed,StreamDeskStream,StreamDeskProvider} = require('.');
-const $ = require('jquery');
+const fs = require('fs');
 
 var databases = [];
 
@@ -45,7 +45,8 @@ module.exports = {
             throw "filePath is undefined!";
         }
 
-        $.getJSON(filePath, function(db) {
+            var db = JSON.parse(fs.readFileSync(filePath));
+            
             if(db.fileType == undefined || db.fileType != 'StreamDesk Electron JSONDB') {
                 throw new Error("The JSON used in this file is not a StreamDesk Electron JSONDB File.");
             }
@@ -64,24 +65,25 @@ module.exports = {
             });
 
             db.Providers.forEach(function(x) {
-                var provider = new StreamDeskProvider(x.Name);
+                var provider = new StreamDeskProvider(x.Name, x.ProviderType, x.ProviderUri);
                 iterateProvider(x, provider);
                 sdDbClass.Providers.push(provider);
             });
 
             databases.push(sdDbClass);
             afterLoadCallback(sdDbClass);
-        });
+
     },
 
     populateStreams: function() {
-        var html = "";
+        var menu = [];
         databases.forEach(function (x) {
-            html += '<li><a href="#">' + x.Name + '</a><ul>'
-            html += x.populateStreams();
-            html += '</ul></li>';
+            var menuItem = {}
+            menuItem.label = x.Name;
+            menuItem.submenu = x.populateStreams();
+            menu.push(menuItem);
         });
-        return html;
+        return menu;
     },
 
     getDatabaseAndStreamFromGuid: function(guidId) {

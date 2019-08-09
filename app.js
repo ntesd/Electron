@@ -15,46 +15,103 @@
  * limitations under the License.
  ***************************************************************************************************/
 
-const {app, BrowserWindow, ipcMain} = require('electron');
+const {
+    app,
+    BrowserWindow,
+    Menu,
+    ipcMain
+} = require('electron');
 
 const settings = require('./modules/settings');
+const {
+    StreamDesk
+} = require('./modules/sd_database');
 
 var win;
 
-ipcMain.on('open-aboutwindow', function() {
-    var about = new BrowserWindow({ width: 600, height: 400, resizable: false,
-        parent: win, modal: true });
-    about.setMenu(null);
-
-    about.loadFile('assets/html/sd_aboutstreamdesk.html');
-});
-
-ipcMain.on('open-editor', function() {
-    const editor = require('./modules/editor');
-    editor.openEditor();
-});
-
-ipcMain.on('open-prefs', function() {
-    const prefs = require('./modules/prefs');
-    prefs.openPrefs();
-});
-
-ipcMain.on('get-settings', function(event) {
+ipcMain.on('get-settings', function (event) {
     event.sender.send('process-settings', settings.getSettings());
 });
 
-ipcMain.on('set-settings', function(event, value) {
+ipcMain.on('set-settings', function (event, value) {
     settings.setSettings(value);
     win.webContents.send('process-settings', settings.getSettings());
 });
 
-app.on('ready', function() {
+function refreshStreams() {
+    var menu = Menu.buildFromTemplate([{
+            label: "File",
+            submenu: [{
+                    label: "Options",
+                    click: function () {
+                        const prefs = require('./modules/prefs');
+                        prefs.openPrefs();
+                    }
+                },
+                {
+                    label: "Exit"
+                }
+            ]
+        },
+        ...(settings.getSettings().showDebugMode ? [{
+            label: "Developer",
+            submenu: [{
+                    label: 'Open Streams Database Editor',
+                    click: function () {
+                        const editor = require('./modules/editor');
+                        editor.openEditor();
+                    }
+                },
+                {
+                    label: "Open Developer Tools",
+                    click(item, focusedWindow) {
+                        focusedWindow.webContents.openDevTools();
+                    }
+                }
+            ]
+        }] : []),
+        {
+            label: "Streams",
+            submenu: StreamDesk.populateStreams()
+        },
+        {
+            label: 'Help',
+            submenu: [{
+                label: 'About StreamDesk 3...',
+                click: function () {
+                    var about = new BrowserWindow({
+                        width: 600,
+                        height: 360,
+                        resizable: false,
+                        parent: win,
+                        modal: true
+                    });
+                    about.setMenu(null);
+
+                    about.loadFile('assets/html/sd_aboutstreamdesk.html');
+                }
+            }]
+        }
+    ])
+    Menu.setApplicationMenu(menu);
+}
+
+app.on('ready', function () {
     settings.initSettings();
 
-    win = new BrowserWindow({width: 800, height: 600});
-    win.setMenu(null);
+    var settingsobj = settings.getSettings();
 
-    win.loadFile('assets/html/sd_mainscreen.html');
+    StreamDesk.resetDatabase();
+    refreshStreams();
+    win = new BrowserWindow({
+        width: 800,
+        height: 600
+    });
+    //win.loadFile('./assets/html/sd_mainscreen.html');
+    win.loadURL('http://html5test.com');
+    settingsobj.streamFiles.forEach(function (x) {
+        StreamDesk.loadDatabase(x, () => refreshStreams());
+    });
 });
 
 app.on('window-all-closed', function () {
@@ -63,4 +120,9 @@ app.on('window-all-closed', function () {
 
 app.on('will-quit', function () {
     settings.saveSettings();
+});
+
+app.on('load-stream', function (value) {
+    var streamInfo = StreamDesk.getDatabaseAndStreamFromGuid(value);
+    win.webContents.send('set-embed', streamInfo.stream.GuidId, streamInfo.db.getStreamEmbed(streamInfo.stream.StreamEmbed).replace('$ID$', streamInfo.stream.ID));
 });
