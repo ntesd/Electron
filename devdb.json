@@ -10,6 +10,11 @@
             "ID": "stream_twitch",
             "Name": "Twitch",
             "Embed": "<iframe class=\"stream-frame\" src=\"https://player.twitch.tv/?channel=$ID$\"></iframe>"
+        },
+        {
+            "ID": "embed_videostream",
+            "Name": "Video Stream",
+            "Embed": "<video controls autoplay><source src=\"$ID$\" type=\"video/mp4\"></video>"
         }
     ],
     "ChatEmbeds": [
@@ -72,7 +77,7 @@
         {
             "Name": "Security Now",
             "ProviderType": "GenericRSSFeed",
-            "ProviderUri": "",
+            "ProviderUri": "http://feeds.twit.tv/sn_video_hd.xml",
             "Streams": [],
             "SubProviders": []
         }

@@ -17,8 +17,8 @@
 
 module.exports = class StreamDeskStream {
     constructor(id = '', guidId = '{00000000-0000-0000-0000-000000000000}', name = '',
-                description = '', web = '', promoted = false, streamembed = '', chatembed = '',
-                channel = '', width = 800, height = 600, ...tags) {
+        description = '', web = '', promoted = false, streamembed = '', chatembed = '',
+        channel = '', width = 800, height = 600, ...tags) {
         this.ID = id;
         this.GuidId = guidId;
         this.Name = name;

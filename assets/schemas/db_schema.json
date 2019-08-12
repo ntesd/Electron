@@ -65,18 +65,22 @@
                 },
                 "ProviderType": {
                     "type": "string",
-                    "enum": [ "Standard", "GenericRSSFeed", "GenericAtomFeed", "YouTubeAtomFeed" ]
+                    "enum": ["Standard", "GenericRSSFeed", "GenericAtomFeed", "YouTubeAtomFeed"]
                 },
                 "ProviderUri": {
                     "type": "string"
                 },
                 "Streams": {
                     "type": "array",
-                    "items": { "$ref": "#/definitions/stream" }
+                    "items": {
+                        "$ref": "#/definitions/stream"
+                    }
                 },
                 "SubProviders": {
                     "type": "array",
-                    "items": { "$ref": "#/definitions/provider" }
+                    "items": {
+                        "$ref": "#/definitions/provider"
+                    }
                 }
             }
         }
@@ -107,15 +111,21 @@
         },
         "StreamEmbeds": {
             "type": "array",
-            "items": { "$ref": "#/definitions/embed" }
+            "items": {
+                "$ref": "#/definitions/embed"
+            }
         },
         "ChatEmbeds": {
             "type": "array",
-            "items": { "$ref": "#/definitions/embed" }
+            "items": {
+                "$ref": "#/definitions/embed"
+            }
         },
         "Providers": {
             "type": "array",
-            "items": { "$ref": "#/definitions/provider" }
+            "items": {
+                "$ref": "#/definitions/provider"
+            }
         }
     }
 }

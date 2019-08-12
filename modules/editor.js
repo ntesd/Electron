@@ -15,49 +15,55 @@
  * limitations under the License.
  ***************************************************************************************************/
 
-const {BrowserWindow, Menu} = require('electron');
+const {
+    BrowserWindow,
+    Menu
+} = require('electron');
 
-const editorMenu = [
-    {
+const editorMenu = [{
         label: 'File',
-        submenu: [
-            {
+        submenu: [{
                 label: 'Open',
-                click (item, focusedWindow) {
+                click(item, focusedWindow) {
                     focusedWindow.webContents.send('open-file');
                 }
             },
             {
                 label: 'Save',
-                click (item, focusedWindow) {
+                click(item, focusedWindow) {
                     focusedWindow.webContents.send('save-file');
                 }
             },
             {
                 label: 'Save As....',
-                click (item, focusedWindow) {
+                click(item, focusedWindow) {
                     focusedWindow.webContents.send('save-file-as');
                 }
             },
-            { type: 'separator' },
-            { role: 'close' }
+            {
+                type: 'separator'
+            },
+            {
+                role: 'close'
+            }
         ]
     },
     {
         label: 'Debug',
-        submenu: [
-            {
-                label: 'Show Debug Tools',
-                click (item, focusedWindow) {
-                    focusedWindow.webContents.openDevTools();
-                }
+        submenu: [{
+            label: 'Show Debug Tools',
+            click(item, focusedWindow) {
+                focusedWindow.webContents.openDevTools();
             }
-        ]
+        }]
     }
 ];
 
-module.exports.openEditor = function() {
-    var about = new BrowserWindow({ width: 800, height: 600 });
+module.exports.openEditor = function () {
+    var about = new BrowserWindow({
+        width: 800,
+        height: 600
+    });
     about.setMenu(Menu.buildFromTemplate(editorMenu));
     about.loadFile('assets/html/sd_streameditor.html');
 };

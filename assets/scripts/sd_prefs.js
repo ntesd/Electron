@@ -24,8 +24,8 @@ var editor;
 
 ipcRenderer.send('get-settings');
 
-ipcRenderer.on('process-settings', function(event, settings) {
-    $.getJSON('../schemas/prefs.json', function(data) {
+ipcRenderer.on('process-settings', function (event, settings) {
+    $.getJSON('../schemas/prefs.json', function (data) {
         var element = document.getElementById('parent');
 
         editor = new JSONEditor(element, {

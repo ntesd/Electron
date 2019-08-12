@@ -14,7 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ***************************************************************************************************/
-const { app } = require('electron')
+const {
+    ipcMain
+} = require('electron')
 
 module.exports = class StreamDeskDatabase {
     constructor(name = '', description = '', vendorName = '') {
@@ -39,19 +41,19 @@ module.exports = class StreamDeskDatabase {
             menuItem.label = providerObject.Name;
             menuItem.submenu = [];
 
-            providerObject.Streams.forEach(function(x) {
+            providerObject.Streams.forEach(function (x) {
                 var streamMenuItem = {};
                 streamMenuItem.label = x.Name;
                 streamMenuItem.GuidId = x.GuidId;
-                streamMenuItem.click = function() { 
-                    app.emit('load-stream', x.GuidId);
+                streamMenuItem.click = function () {
+                    ipcMain.emit('load-stream', x.GuidId);
                 };
                 //x.GuidId.replace('{','').replace('}','') +'">' +
                 menuItem.submenu.push(streamMenuItem);
             });
 
-            if(providerObject.SubProviders != undefined) {
-                providerObject.SubProviders.forEach(function(x) {
+            if (providerObject.SubProviders != undefined) {
+                providerObject.SubProviders.forEach(function (x) {
                     menuItem.submenu.push(iterateProvider(x));
                 });
             }
@@ -59,7 +61,7 @@ module.exports = class StreamDeskDatabase {
             return menuItem;
         };
 
-        this.Providers.forEach(function(provider) {
+        this.Providers.forEach(function (provider) {
             menu.push(iterateProvider(provider));
         });
 
@@ -70,18 +72,18 @@ module.exports = class StreamDeskDatabase {
         function iterateProvider(providerObject) {
             var returnValue = undefined;
 
-            providerObject.Streams.some(function(x) {
-                if(x.GuidId === guidId) {
+            providerObject.Streams.some(function (x) {
+                if (x.GuidId === guidId) {
                     returnValue = x;
                     return true;
                 }
                 return false;
             });
 
-            if(providerObject.SubProviders != undefined) {
-                providerObject.SubProviders.some(function(x) {
+            if (providerObject.SubProviders != undefined) {
+                providerObject.SubProviders.some(function (x) {
                     var element = iterateProvider(x);
-                    if(element != undefined) {
+                    if (element != undefined) {
                         returnValue = element;
                         return true;
                     }
@@ -94,9 +96,9 @@ module.exports = class StreamDeskDatabase {
 
         var returnValue = undefined;
 
-        this.Providers.some(function(x) {
+        this.Providers.some(function (x) {
             var element = iterateProvider(x);
-            if(element != undefined) {
+            if (element != undefined) {
                 returnValue = element;
                 return true;
             }
@@ -108,7 +110,7 @@ module.exports = class StreamDeskDatabase {
 
     getAllStreams() {
         function iterateProvider(providerObject, array, dbName) {
-            providerObject.Streams.forEach(function(x) {
+            providerObject.Streams.forEach(function (x) {
                 array.push({
                     id: x.GuidId,
                     database: dbName,
@@ -118,8 +120,8 @@ module.exports = class StreamDeskDatabase {
                 });
             });
 
-            if(providerObject.SubProviders != undefined) {
-                providerObject.SubProviders.forEach(function(x) {
+            if (providerObject.SubProviders != undefined) {
+                providerObject.SubProviders.forEach(function (x) {
                     iterateProvider(x, array, dbName);
                 });
             }
@@ -127,7 +129,7 @@ module.exports = class StreamDeskDatabase {
 
         var returnValue = [];
 
-        this.Providers.forEach(function(x) {
+        this.Providers.forEach(function (x) {
             iterateProvider(x, returnValue, this.Name);
         }, this);
 
@@ -137,8 +139,8 @@ module.exports = class StreamDeskDatabase {
     getStreamEmbed(embedName) {
         var returnValue = undefined;
 
-        this.StreamEmbeds.some(function(x) {
-            if(x.ID === embedName) {
+        this.StreamEmbeds.some(function (x) {
+            if (x.ID === embedName) {
                 returnValue = x.Embed;
                 return true;
             }
@@ -151,8 +153,8 @@ module.exports = class StreamDeskDatabase {
     getChatEmbed(embedName) {
         var returnValue = undefined;
 
-        this.ChatEmbeds.some(function(x) {
-            if(x.ID === embedName) {
+        this.ChatEmbeds.some(function (x) {
+            if (x.ID === embedName) {
                 returnValue = x.Embed;
                 return true;
             }

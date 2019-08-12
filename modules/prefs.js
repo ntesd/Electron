@@ -15,10 +15,15 @@
  * limitations under the License.
  ***************************************************************************************************/
 
-const {BrowserWindow} = require('electron');
+const {
+    BrowserWindow
+} = require('electron');
 
-module.exports.openPrefs = function() {
-    var prefs = new BrowserWindow({ width: 800, height: 600 });
+module.exports.openPrefs = function () {
+    var prefs = new BrowserWindow({
+        width: 800,
+        height: 600
+    });
     prefs.setMenu(null);
 
     prefs.loadFile('assets/html/sd_prefs.html');

@@ -22,33 +22,33 @@ const release = require('../release');
 var settingsPath;
 var settings;
 
-module.exports.initSettings = function() {
+module.exports.initSettings = function () {
     settingsPath = process.env.APPDATA || (process.platform == 'darwin' ?
         process.env.HOME + '/Library/Preferences' : '/var/local');
     settingsPath += path.sep + 'streamdesk.json';
 
-    if(fs.existsSync(settingsPath)) {
+    if (fs.existsSync(settingsPath)) {
         settings = JSON.parse(fs.readFileSync(settingsPath, 'utf-8'));
     } else {
         settings = {
-            streamFiles: [ (release.generatedInfo.debugBuild ?
-                'devdb.json'
-                : 'https://streamdesk.ca/streams.json') // StreamDesk Primary DB Path
-             ],
+            streamFiles: [(release.generatedInfo.debugBuild ?
+                    'devdb.json' :
+                    'https://streamdesk.ca/streams.json') // StreamDesk Primary DB Path
+            ],
             showDebugMode: release.generatedInfo.debugBuild,
         };
     }
 };
 
-module.exports.setSettings = function(value) {
+module.exports.setSettings = function (value) {
     settings = value;
 };
 
-module.exports.getSettings = function() {
+module.exports.getSettings = function () {
     return settings;
 };
 
-module.exports.saveSettings = function() {
+module.exports.saveSettings = function () {
     var settingsJson = JSON.stringify(settings, null, 4);
     fs.writeFileSync(settingsPath, settingsJson, 'utf-8');
 };

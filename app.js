@@ -22,21 +22,12 @@ const {
     ipcMain
 } = require('electron');
 
-const settings = require('./modules/settings');
 const {
     StreamDesk
 } = require('./modules/sd_database');
 
+const settings = require('./modules/settings');
 var win;
-
-ipcMain.on('get-settings', function (event) {
-    event.sender.send('process-settings', settings.getSettings());
-});
-
-ipcMain.on('set-settings', function (event, value) {
-    settings.setSettings(value);
-    win.webContents.send('process-settings', settings.getSettings());
-});
 
 function refreshStreams() {
     var menu = Menu.buildFromTemplate([{
@@ -96,6 +87,20 @@ function refreshStreams() {
     Menu.setApplicationMenu(menu);
 }
 
+ipcMain.on('get-settings', function (event) {
+    event.sender.send('process-settings', settings.getSettings());
+});
+
+ipcMain.on('set-settings', function (event, value) {
+    settings.setSettings(value);
+    win.webContents.send('process-settings', settings.getSettings());
+});
+
+ipcMain.on('load-stream', function (value) {
+    var streamInfo = StreamDesk.getDatabaseAndStreamFromGuid(value);
+    win.webContents.send('set-embed', streamInfo.stream.GuidId, streamInfo.db.getStreamEmbed(streamInfo.stream.StreamEmbed).replace('$ID$', streamInfo.stream.ID));
+});
+
 app.on('ready', function () {
     settings.initSettings();
 
@@ -107,8 +112,8 @@ app.on('ready', function () {
         width: 800,
         height: 600
     });
-    //win.loadFile('./assets/html/sd_mainscreen.html');
-    win.loadURL('http://html5test.com');
+    win.loadFile('./assets/html/sd_mainscreen.html');
+
     settingsobj.streamFiles.forEach(function (x) {
         StreamDesk.loadDatabase(x, () => refreshStreams());
     });
@@ -120,9 +125,4 @@ app.on('window-all-closed', function () {
 
 app.on('will-quit', function () {
     settings.saveSettings();
-});
-
-app.on('load-stream', function (value) {
-    var streamInfo = StreamDesk.getDatabaseAndStreamFromGuid(value);
-    win.webContents.send('set-embed', streamInfo.stream.GuidId, streamInfo.db.getStreamEmbed(streamInfo.stream.StreamEmbed).replace('$ID$', streamInfo.stream.ID));
 });

@@ -15,67 +15,122 @@
  * limitations under the License.
  ***************************************************************************************************/
 
-const {StreamDeskDatabase,StreamDeskEmbed,StreamDeskStream,StreamDeskProvider} = require('.');
+const {
+    StreamDeskDatabase,
+    StreamDeskEmbed,
+    StreamDeskStream,
+    StreamDeskProvider
+} = require('.');
+const Parser = require('rss-parser');
+
 const fs = require('fs');
 
 var databases = [];
 
 module.exports = {
-    loadDatabase: function(filePath, afterLoadCallback) {
+    loadDatabase: function (filePath, afterLoadCallback) {
         function iterateProvider(providerJson, providerObject) {
-            providerJson.Streams.forEach(function(x) {
+            providerJson.Streams.forEach(function (x) {
                 var stream = new StreamDeskStream(x.ID, x.GuidId, x.Name, x.Description, x.Web,
                     x.Promoted, x.StreamEmbed, x.ChatEmbed, x.Channel, x.Width, x.Height);
-                x.Tags.forEach(function(i) {
+                x.Tags.forEach(function (i) {
                     stream.Tags.push(i);
                 });
                 providerObject.Streams.push(stream);
             });
 
-            if(providerJson.SubProviders != undefined) {
-                providerJson.SubProviders.forEach(function(x) {
+            if (providerJson.SubProviders != undefined) {
+                providerJson.SubProviders.forEach(function (x) {
                     var provider = new StreamDeskProvider(x.Name);
                     iterateProvider(x, provider);
                     providerObject.SubProviders.push(provider);
                 });
             }
-        };
 
-        if(typeof(filePath) == undefined) {
+            providerObject.ProviderUri = providerJson.ProviderUri;
+            providerObject.ProviderType = providerJson.ProviderType;
+        }
+
+        function iterateRSS(providerObject, refreshCallback) {
+            function uuidv4() {
+                return '{xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx}'.replace(/[xy]/g, function (c) {
+                    var r = Math.random() * 16 | 0,
+                        v = c == 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+            }
+
+            if (providerObject.ProviderType === 'GenericRSSFeed') {
+                (async () => {
+                    var parser = new Parser({
+                        customFields: {
+                            item: [
+                                ['media:content', 'mediacontent'],
+                            ]
+                        }
+                    });
+                    var feed = await parser.parseURL(providerObject.ProviderUri)
+
+                    feed.items.forEach(function (item) {
+                        var stream = new StreamDeskStream(item.mediacontent.$.url, uuidv4(), item.title, item.description, item.link,
+                            false, 'embed_videostream', 'none', '', 640, 480);
+                        //x.Tags.forEach(function (i) {
+                        //    stream.Tags.push(i);
+                        //});
+                        providerObject.Streams.push(stream);
+                    });
+
+                    refreshCallback();
+                })();
+            }
+
+            if (providerObject.SubProviders != undefined) {
+                providerObject.SubProviders.forEach(function (x) {
+                    iterateRSS(x, refreshCallback);
+                });
+            }
+        }
+
+        if (typeof (filePath) == undefined) {
             throw "filePath is undefined!";
         }
 
-            var db = JSON.parse(fs.readFileSync(filePath));
-            
-            if(db.fileType == undefined || db.fileType != 'StreamDesk Electron JSONDB') {
-                throw new Error("The JSON used in this file is not a StreamDesk Electron JSONDB File.");
-            }
+        var db = JSON.parse(fs.readFileSync(filePath));
 
-            var sdDbClass = new StreamDeskDatabase();
-            sdDbClass.Name = db.Name;
-            sdDbClass.Description = db.Description;
-            sdDbClass.VendorName = db.VendorName;
+        if (db.fileType == undefined || db.fileType != 'StreamDesk Electron JSONDB') {
+            throw new Error("The JSON used in this file is not a StreamDesk Electron JSONDB File.");
+        }
 
-            db.StreamEmbeds.forEach(function(x) {
-                sdDbClass.StreamEmbeds.push(new StreamDeskEmbed(x.ID, x.Name, x.Embed));
+        var sdDbClass = new StreamDeskDatabase();
+        sdDbClass.Name = db.Name;
+        sdDbClass.Description = db.Description;
+        sdDbClass.VendorName = db.VendorName;
+
+        db.StreamEmbeds.forEach(function (x) {
+            sdDbClass.StreamEmbeds.push(new StreamDeskEmbed(x.ID, x.Name, x.Embed));
+        });
+
+        db.ChatEmbeds.forEach(function (x) {
+            sdDbClass.ChatEmbeds.push(new StreamDeskEmbed(x.ID, x.Name, x.Embed));
+        });
+
+        db.Providers.forEach(function (x) {
+            var provider = new StreamDeskProvider(x.Name, x.ProviderType, x.ProviderUri);
+            iterateProvider(x, provider);
+            sdDbClass.Providers.push(provider);
+        });
+
+        databases.push(sdDbClass);
+
+        sdDbClass.Providers.forEach(function (x) {
+            iterateRSS(x, () => {
+                afterLoadCallback(sdDbClass);
             });
-
-            db.ChatEmbeds.forEach(function(x) {
-                sdDbClass.ChatEmbeds.push(new StreamDeskEmbed(x.ID, x.Name, x.Embed));
-            });
-
-            db.Providers.forEach(function(x) {
-                var provider = new StreamDeskProvider(x.Name, x.ProviderType, x.ProviderUri);
-                iterateProvider(x, provider);
-                sdDbClass.Providers.push(provider);
-            });
-
-            databases.push(sdDbClass);
-            afterLoadCallback(sdDbClass);
-
+        });
+        afterLoadCallback(sdDbClass);
     },
 
-    populateStreams: function() {
+    populateStreams: function () {
         var menu = [];
         databases.forEach(function (x) {
             var menuItem = {}
@@ -86,13 +141,16 @@ module.exports = {
         return menu;
     },
 
-    getDatabaseAndStreamFromGuid: function(guidId) {
+    getDatabaseAndStreamFromGuid: function (guidId) {
         var returnValue = undefined;
 
         databases.some(function (x) {
             var stream = x.getStreamInformationForGuid(guidId);
-            if(stream != undefined) {
-                returnValue = {stream: stream, db: x};
+            if (stream != undefined) {
+                returnValue = {
+                    stream: stream,
+                    db: x
+                };
                 return true;
             }
             return false;
@@ -101,7 +159,7 @@ module.exports = {
         return returnValue;
     },
 
-    getAllStreams: function() {
+    getAllStreams: function () {
         var returnValue = [];
 
         databases.forEach(function (x) {
@@ -111,7 +169,7 @@ module.exports = {
         return returnValue;
     },
 
-    resetDatabase: function() {
+    resetDatabase: function () {
         databases = [];
     }
 };
